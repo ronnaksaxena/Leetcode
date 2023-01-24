@@ -16,7 +16,9 @@ class Solution:
     if word1[j] != word2[i]:
         DP[i][j] = 1 + min(DP[i-1][j-1], DP[i-1][j], DP[i][j-1])
     else:
-        DP[i][j] = min(DP[i-1][j-1], DP[i-1][j], DP[i][j-1])
+        DP[i][j] = DP[i-1][j-1]
+    Time: O(n x m)
+    Space: O(n x m) Where n and m are lengths of word
         '''
         
         DP = [[0 for _ in range(len(word1)+1)] for _ in range(len(word2)+1)]
