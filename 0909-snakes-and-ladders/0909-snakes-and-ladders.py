@@ -17,7 +17,6 @@ class Solution:
         # BFS
         while q:
             cell, moves = q.popleft()
-            print(cell, moves)
             if cell == destination:
                 return moves
             for roll in range(1,7):
