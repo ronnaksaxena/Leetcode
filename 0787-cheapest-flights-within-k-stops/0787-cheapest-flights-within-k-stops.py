@@ -1,27 +1,17 @@
 class Solution:
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
         
-        graph = collections.defaultdict(list) # (from: [(cost, to)])
+        minPrices = [float('inf') for _ in range(n)]
+        minPrices[src] = 0
         
-        for start, end, cost in flights:
-            graph[start].append((cost, end))
+        # Do k stops
+        for _ in range(k+1):
+            temp = minPrices[:]
+            # Bellman Ford
+            for start, end, price in flights:
+                if minPrices[start] + price < temp[end]:
+                    temp[end] = minPrices[start] + price
+            minPrices = temp
             
-        heap = [(0, src, k)] # (cost, stop, kLeft)
-        visited = set()
-        
-        while heap:
-            cost, stop, kLeft = heapq.heappop(heap)
-            if stop == dst:
-                return cost
-            if (stop, kLeft) in visited:
-                continue
-            visited.add((stop, kLeft))
-            if kLeft >= 0:
-                for neiCost, nei in graph[stop]:
-                    if (nei, kLeft-1) not in visited:
-                        heapq.heappush(heap, (cost+neiCost, nei, kLeft-1))
-        return -1
-                
-            
-        
+        return minPrices[dst] if minPrices[dst] != float('inf') else -1
         
