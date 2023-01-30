@@ -13,14 +13,10 @@ class Solution:
                 #check if reached target
                 if position == target:
                     return moves
-                #already seen
-                if (position, speed) in visited:
-                    continue
-
-                visited.add((position,speed))
-
                 #try to accelerate
-                q.append((position+speed, speed*2))
+                if (position+ speed, speed *2) not in visited:
+                    q.append((position+speed, speed*2))
+                    visited.add((position+speed,speed*2))
 
                 #try to reverse under 2 conditions:
                 #1: car is going foreward and you will pass target
@@ -29,7 +25,8 @@ class Solution:
                     #update speed according to conditions
                     speed = -1 if speed > 0 else 1
                     #do not change positions
-                    q.append((position,speed))
+                    if (position, speed) not in visited:
+                        q.append((position,speed))
             moves += 1
             
         return -1
