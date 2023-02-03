@@ -22,7 +22,6 @@ class Solution:
         zigzag = [[] for _ in range(numRows)]
         
         while stringIndex < len(s):
-            # print(curRow, s[stringIndex])
             if curRow == 0:
                 for _ in range(numRows):
                     # Out of chars
@@ -31,7 +30,7 @@ class Solution:
                     zigzag[curRow].append(s[stringIndex])
                     curRow += 1
                     stringIndex += 1
-                curRow = (curRow-2) if numRows > 1 else 0
+                curRow = (curRow-2) if numRows > 1 else 0 # Edge Case if 1 row
             else:
                 zigzag[curRow].append(s[stringIndex])
                 curRow = (curRow-1) if numRows > 1 else 0
