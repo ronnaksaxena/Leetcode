@@ -11,6 +11,8 @@ class Solution:
         c: 1
         }
         output = [0, 6]
+        Time: O(n + m) where n == len(s) and m == len(p)
+        Space: O(m) where m == len(p)
         '''
         # populate letters count
         letters = {chr(i): 0 for i in range(ord('a'), ord('z')+1)}
