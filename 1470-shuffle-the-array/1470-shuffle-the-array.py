@@ -9,6 +9,8 @@ class Solution:
              i
              x
                    y
+        Time: O(n) where n is len(nums)
+        Space: O(1) output array is returned at the end
         ''' 
         
         output = [0 for _ in range(2*n)]
