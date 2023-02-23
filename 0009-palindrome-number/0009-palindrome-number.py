@@ -3,6 +3,7 @@ class Solution:
         # if neg not palnedrome
         if x < 0:
             return False
+        # Returns the power of the 10 that a number is
         def getDigitPow(num):
             res = 1
             while num:
@@ -11,9 +12,10 @@ class Solution:
             return res // 10 #off by one
         
         left, right = getDigitPow(x), 10
+        # 2 pointer
         while left >= right:
+            # Get left and right digits
             lDigit, rDigit = (x // left)%10, (x % right) // (right // 10)
-            # print(left, right, lDigit, rDigit)
             if lDigit != rDigit:
                 return False
             
