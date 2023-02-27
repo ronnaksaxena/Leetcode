@@ -22,8 +22,8 @@ class Solution:
             b divide grid into 4 parts and do recurisve call on each part
             c return root of QT
         
-        Time: O(N) elemnts in grid
-        Space: O(h) h is height of tree
+        Time: O(N^2LogN) since every rec call is half number of elemnts but twice number of call
+        Space: O(logN) since you log number of elemnts by 4 for every rec call
         '''
         def isLeaf(grid, x, y, length):
             # 1 square grid
