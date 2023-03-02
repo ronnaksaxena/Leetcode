@@ -4,8 +4,8 @@ class Solution:
         if len(trust) < N - 1:
             return -1
     
-        indegree = [0] * (N + 1)
-        outdegree = [0] * (N + 1)
+        indegree = collections.defaultdict(int)
+        outdegree = collections.defaultdict(int)
 
         for a, b in trust:
             outdegree[a] += 1
