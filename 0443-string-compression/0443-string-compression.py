@@ -20,6 +20,7 @@ class Solution:
             else:
                 count += 1
             curC = c
+        # add last char encoding
         if count == 1:
             chars[p] = curC
             p += 1
