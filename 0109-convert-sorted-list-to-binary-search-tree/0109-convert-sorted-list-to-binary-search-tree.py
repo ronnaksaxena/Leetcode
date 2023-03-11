@@ -37,11 +37,12 @@ class Solution:
         mid.right = rec(slow.next)
         return mid
         '''
+        # Start is inclusive, end is exclusive
         def helper(start, end):
+            # No nodes in this subtree
             if start == end:
                 return None
-            if not start and not end:
-                return None
+            # Find middle node to make root
             slow, fast = start, start
             while fast != end and fast.next != end:
                 slow = slow.next
@@ -51,7 +52,6 @@ class Solution:
             root.left = helper(start, slow)
             root.right = helper(slow.next, end)
             return root
-        
         
         return helper(head, None)
         
