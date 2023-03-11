@@ -23,19 +23,8 @@ class Solution:
                   -3
                  / \
                -10 None
-        
-        BASE CASES:
-        if start == end: return None
-        if not start and not end: return None
-        otherwise make node from middle and recruse
-        fast, slow = start, start
-        while fast != end.next and fast.next != end.next:
-            fast = fast.next.next
-            slow = slow.next
-        mid = TreeNode(slow.val)
-        mid.left = rec(start)
-        mid.right = rec(slow.next)
-        return mid
+        Time: O(n) to process every node in list
+        Space: O(logn) height will be log2 of size of list
         '''
         # Start is inclusive, end is exclusive
         def helper(start, end):
