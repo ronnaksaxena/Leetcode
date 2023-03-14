@@ -17,11 +17,8 @@ class Solution:
             if not node.right and not node.left:
                 ans += curSum
                 return
-            # Want to ignore children that are null
-            if node.left:
-                dfs(node.left, curSum)
-            if node.right:
-                dfs(node.right, curSum)
+            dfs(node.left, curSum)
+            dfs(node.right, curSum)
             
         
         dfs(root, 0)
