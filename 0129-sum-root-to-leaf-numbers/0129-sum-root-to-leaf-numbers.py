@@ -6,7 +6,6 @@
 #         self.right = right
 class Solution:
     def sumNumbers(self, root: Optional[TreeNode]) -> int:
-        
         ans = 0
         def dfs(node, curSum):
             nonlocal ans
@@ -19,8 +18,9 @@ class Solution:
                 return
             dfs(node.left, curSum)
             dfs(node.right, curSum)
-            
-        
         dfs(root, 0)
         return ans
-        
+        '''
+        Time: O(n) for n nodes in tree
+        Space: O(h) where h is height of tree for recurisve stack
+        '''
