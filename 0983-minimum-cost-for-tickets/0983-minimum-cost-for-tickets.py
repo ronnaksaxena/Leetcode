@@ -1,38 +1,27 @@
 class Solution:
     def mincostTickets(self, days: List[int], costs: List[int]) -> int:
         
-        '''
-        days = [1,4,6,7,8,20]
-        costs = [2,7,15]
-        q = [(0,0)] -> (day, cost)
-        minCost = float('inf')
-        while q[0] <= curDay: -> all expired tickets
-            day, cost = q.popleft()
-            if cost < minCost: -> obtain lowest cost to make it to this day
-                minCost = cost
-            q.append((curDay + 1, minCost+costs[0])) -> 1 day pass
-            q.append((curDay + 7, minCost+costs[1])) -> 7 day pass
-            q.append((curDay + 30, minCost+costs[2])) -> 30 day pass
-        # return the min money spent
-        return min(q, key= lambda x: x[1])
+        cost = 0
+        # Front of queue will always be the least expensive ticket that is still valid that day
+        dp7 = deque() # queue is of day, min_cost_so_far
+        dp30 = deque()
         
-        '''
-        @cache
-        def search(day_index, current_day):
-            if day_index >= len(days):
-                # vacation is over
-                return 0
-            if current_day > days[day_index]:
-                # we're covered, keep searching
-                return search(day_index+1, current_day)
+        for d in days:
+            # remove all values from the queue that expired before this day
+            '''
+            why <= ?
+            ex. dp7 = [(1, 20)] and d == 8 then that ticket expired today and you have to buy another one
+            but ticket for [(2, 40)] is still valid
+            '''
+            while dp7 and dp7[0][0] <= d-7:
+                dp7.popleft()
+            while dp30 and dp30[0][0] <= d-30:
+                dp30.popleft()
+                
+            dp7.append((d, cost + costs[1]))
+            dp30.append((d, cost + costs[2]))
             
-            return min(
-                costs[0] + search(day_index+1, days[day_index]+1),
-                costs[1] + search(day_index+1, days[day_index]+7),
-                costs[2] + search(day_index+1, days[day_index]+30)
-            )
-        
-        return search(0, 0)
+            cost = min(cost+costs[0],dp7[0][1],dp30[0][1])
             
             
-        
+        return cost
