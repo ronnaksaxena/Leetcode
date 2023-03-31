@@ -1,8 +1,8 @@
 class Solution:
     def findMin(self, nums: List[int]) -> int:
         '''
-        1. find pivot
-        2. min is nums[pivot+1] if pivot < len(nums) -1 else numns[0]
+        Time: O(logn)
+        Space: O(1)
         
         '''
         # Needs to be len(nums) -1 because you're comparing to s[r]
