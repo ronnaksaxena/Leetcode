@@ -10,18 +10,18 @@ class Solution:
         
         '''
         
-        output = set()
+        output = []
         
-        def backtrack(combo = [], curSum = 0):
+        def backtrack(combo = [], curSum = 0, start = 0):
             nonlocal output
             if curSum == target:
-                output.add(copy.deepcopy(tuple(sorted(combo))))
+                output.append(copy.deepcopy(combo))
                 return
             if curSum > target:
                 return
-            for n in candidates:
-                combo.append(n)
-                backtrack(combo, curSum + n)
+            for i in range(start, len(candidates)):
+                combo.append(candidates[i])
+                backtrack(combo, curSum + candidates[i], i)
                 combo.pop()
         
         backtrack()
