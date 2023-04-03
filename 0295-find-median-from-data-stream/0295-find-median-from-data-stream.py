@@ -51,7 +51,6 @@ class MedianFinder:
         
 
     def findMedian(self) -> float:
-        # print(self.maxH, self.minH)
         # CAREFUL of negative values for max heap
         # Even number of values so take median
         if len(self.minH) == len(self.maxH):
