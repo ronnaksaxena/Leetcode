@@ -21,5 +21,7 @@ class Solution:
                             q.append(nei)
                             
         return componets
+# Time O(E+V) where E is edges and V is nodes
+# Space O(V) where V is vertices
                             
         
