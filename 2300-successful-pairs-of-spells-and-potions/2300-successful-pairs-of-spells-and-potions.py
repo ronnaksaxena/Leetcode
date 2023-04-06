@@ -13,6 +13,7 @@ class Solution:
                     l = m + 1
                 else:
                     r = m
+            # Need to subtract from length becuase l is the first potion that is not a success
             output[i] = len(potions)-l
         
         return output
