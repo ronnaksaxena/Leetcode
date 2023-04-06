@@ -1,18 +1,6 @@
 class Solution:
     def closedIsland(self, grid: List[List[int]]) -> int:
-        '''
-           0,1 2 3 4 5 6 7 8 9
-        0[0,0,1,1,0,1,0,0,1,0],
-        1[1,1,0,1,1,0,1,1,1,0],
-        2[1,0,1,1,1,0,0,1,1,0],
-        3[0,1,1,0,0,0,0,1,0,1],
-        4[0,0,0,0,0,0,1,1,1,0],
-        5[0,1,0,1,0,1,0,1,1,1],
-        6[1,0,1,0,1,1,0,0,0,1],
-        7[1,1,1,1,1,1,0,0,0,0],
-        8[1,1,1,0,0,1,0,1,0,1],
-        9[1,1,1,0,1,1,0,1,1,0]
-        '''
+
         rows, cols = len(grid), len(grid[0])
         islands = 0
         visited = set()
@@ -37,7 +25,6 @@ class Solution:
             for j in range(1, cols-1):
                 if grid[i][j] == 0 and (i,j) not in visited and foundIsland(i, j, visited):
                     islands += 1
-                    # print((i,j))
 
         return islands
                 
