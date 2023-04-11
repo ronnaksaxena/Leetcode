@@ -1,5 +1,6 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
+        # Edge Case
         if len(nums) <= 2:
             return max(nums)
         n = len(nums)
