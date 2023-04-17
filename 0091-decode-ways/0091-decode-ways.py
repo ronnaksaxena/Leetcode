@@ -11,7 +11,7 @@ class Solution:
             # No leading 0
             if s[i-1] != '0':
                 dp[i] = dp[i-1]
-                
+            # There was a double formed, needs to be >= 10 for no leading 0
             twoDig = int(s[i-2:i])
             if 10 <= twoDig <= 26:
                 dp[i] += dp[i-2]
