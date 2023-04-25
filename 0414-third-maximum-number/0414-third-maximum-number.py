@@ -4,5 +4,5 @@ class Solution:
         if len(uniqueNums) < 3:
             return max(uniqueNums)
         
-        return heapq.nlargest(3, list(uniqueNums))[-1]
+        return heapq.nlargest(3, uniqueNums)[-1]
         
