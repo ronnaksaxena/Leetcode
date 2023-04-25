@@ -21,9 +21,11 @@ class Solution:
         seenBikes = set()
         while pq:
             _, worker, bike = heapq.heappop(pq)
+            # Found free bike
             if bike not in seenBikes:
                 output[worker] = bike
                 seenBikes.add(bike)
+            # Need to get next bike
             else:
                 _, _, nextClosest = workerBikePairs[worker].pop()
                 wX, wY = workers[worker]
