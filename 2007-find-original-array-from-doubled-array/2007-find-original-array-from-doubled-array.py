@@ -16,12 +16,14 @@ class Solution:
                     count[half] -= 2
                 else:
                     continue
-            if x in count and half in count and count[x] > 0 and count[half] > 0:
+            elif x in count and half in count and count[x] > 0 and count[half] > 0:
                 # print(x, half)
                 count[x] -= 1
                 count[half] -= 1
                 output.append(half)
+            if count[x] < 0 or count[half] < 0:
+                return []
 
         
-        return output if len(output) == (len(changed) // 2)  and all(c == 0 for c in count.values()) else []
+        return output if len(output) == (len(changed) // 2) else []
         
