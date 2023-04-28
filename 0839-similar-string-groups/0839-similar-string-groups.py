@@ -14,10 +14,10 @@ class UnionFind:
         else:
             if self.rank[p1] > self.rank[p2]:
                 self.par[p2] = p1
-                self.rank[p1] += self.rank[p2]
+                self.rank[p1] += 1
             else:
                 self.par[p1] = p2
-                self.rank[p2] += self.rank[p1]
+                self.rank[p2] += 1
             return True
 
 class Solution:
