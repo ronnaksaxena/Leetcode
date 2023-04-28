@@ -33,8 +33,7 @@ class Solution:
         count = n
         for i in range(n):
             for j in range(i+1, n):
-                if isSimilar(strs[i], strs[j]) and uf.find(i) != uf.find(j):
-                    uf.union(i, j)
+                if isSimilar(strs[i], strs[j]) and uf.union(i,j):
                     count -= 1
                 
         return count
