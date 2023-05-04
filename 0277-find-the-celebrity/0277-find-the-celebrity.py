@@ -15,6 +15,7 @@ class Solution:
         for i in range(0, n):
             if i == cand:
                 continue
+            # Everyone knows celeb and celb doesn't know others
             if knows(cand, i) or not knows(i, cand):
                 return -1
         return cand
