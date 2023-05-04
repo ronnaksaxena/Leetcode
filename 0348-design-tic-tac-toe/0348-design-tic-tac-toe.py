@@ -11,7 +11,7 @@ class TicTacToe:
             'col': [0 for _ in range(n)],
             'row' : [0 for _ in range(n)],
             'diag': 0,
-            'rdiag': 0 # r == self.n - c
+            'rdiag': 0 # r == self.n - c - 1
         }
         self.n = n
         '''
