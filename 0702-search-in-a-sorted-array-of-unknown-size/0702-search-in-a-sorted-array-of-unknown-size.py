@@ -7,8 +7,12 @@
 
 class Solution:
     def search(self, reader: 'ArrayReader', target: int) -> int:
-        l, r = 0, 10**4
-        OOB = 2**31-1
+        l = 0
+        r = 1
+        
+        while reader.get(r) < target:
+            l = r
+            r *= 2
         
         while l <= r:
             m = l + (r-l)//2
@@ -17,8 +21,6 @@ class Solution:
                 return m
             elif l == r:
                 break
-            elif val == OOB:
-                r = m-1
             elif val < target:
                 l = m + 1
             else:
