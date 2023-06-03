@@ -7,6 +7,7 @@ class Solution:
             # manager -> worker
             graph[manager[worker]].append(worker)
         # Do a dfs on headID to find longest time
+        @cache
         def dfs(worker):
             # At leaf worker
             if not graph[worker]:
