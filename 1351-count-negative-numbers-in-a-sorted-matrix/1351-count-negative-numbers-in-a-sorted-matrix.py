@@ -4,6 +4,7 @@ class Solution:
             l, r = 0, len(arr)
             while l < r:
                 m = l + (r-l)//2
+                # Not a negative value
                 if arr[m] >= 0:
                     l = m + 1
                 else:
