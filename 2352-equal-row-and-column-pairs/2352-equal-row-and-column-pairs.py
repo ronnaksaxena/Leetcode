@@ -5,7 +5,6 @@ class Solution:
         
         # Keep track of the frequency of each row.
         row_counter = collections.Counter(tuple(row) for row in grid)
-        print(row_counter)
 
         # Add up the frequency of each column in map.
         for c in range(n):
