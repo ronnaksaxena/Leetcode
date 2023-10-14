@@ -1,8 +1,6 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        
         curNum, prevSign = 0, '+'
-        
         stack = []
         
         def isOperator(c):
