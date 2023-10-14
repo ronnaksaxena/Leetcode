@@ -6,7 +6,7 @@ class Solution:
         stack = []
         
         def isOperator(c):
-            return c == '+' or c =='-' or c =='*' or c =='/'
+            return c in '+-/*'
         
         for i in range(len(s)):
             
@@ -14,19 +14,16 @@ class Solution:
                 curNum = curNum*10 + int(s[i])
                 
             if isOperator(s[i]) or i == len(s)-1:
-                
                 if prevSign == '+':
                     stack.append(curNum)
                 elif prevSign == '-':
                     stack.append(curNum * -1)
                 elif prevSign == '*':
                     mrc = stack.pop()
-                    
                     stack.append(curNum * mrc)
                 elif prevSign == '/':
                     mrc = stack.pop()
                     stack.append(int(mrc/ curNum))
-                    
                 curNum, prevSign = 0, s[i]
         res = 0
         while stack:
