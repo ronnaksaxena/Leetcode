@@ -23,10 +23,6 @@ class Solution:
                     mrc = stack.pop()
                     stack.append(int(mrc/ curNum))
                 curNum, prevSign = 0, s[i]
-        res = 0
-        while stack:
-            res += stack.pop()
-            
-        return res
+        return sum(stack)
                     
             
