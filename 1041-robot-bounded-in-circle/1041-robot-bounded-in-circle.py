@@ -20,4 +20,8 @@ class Solution:
                 direc = (direc+1)%4
         # Not a limit cycle
         return (x == 0 and y == 0) or direc != 0
+'''
+Time: O(n)
+Space: O(1)
+'''
         
