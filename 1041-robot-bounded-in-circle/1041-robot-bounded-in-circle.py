@@ -20,7 +20,7 @@ class Solution:
                     # R
                     direc = (direc+1)%4
         # Not a limit cycle
-        return x == 0 and y == 0
+        return x == 0 and y == 0 and direc == 0
 '''
 Time: O(n)
 Space: O(1)
