@@ -1,9 +1,11 @@
 class Solution:
     def findTheWinner(self, n: int, k: int) -> int:
-        l = list(range(1,n+1))
-        i = 0
-        while len(l) > 1:
-            i = (i + k - 1)%len(l)
-            l.pop(i)
-        return l[0]
+        winner = 0
+
+        # Calculate the winner using mathematical formula
+        for i in range(2, n + 1):
+            winner = (winner + k) % i
+
+        # Adjust for 0-based indexing
+        return winner + 1
         
