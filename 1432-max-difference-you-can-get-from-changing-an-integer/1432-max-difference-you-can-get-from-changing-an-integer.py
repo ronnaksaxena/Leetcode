@@ -1,13 +1,19 @@
 class Solution:
     def maxDiff(self, num: int) -> int:
-        num = str(num)
-        maxNum, minNum = float('-inf'), float('inf')
-        for i in '0123456789':
-            for j in '0123456789':
-                nextNum = num.replace(i, j)
-                if nextNum[0] == '0' or int(nextNum) == 0:
-                    continue
-                maxNum = max(maxNum, int(nextNum))    
-                minNum = min(minNum, int(nextNum))    
-        return maxNum - minNum 
+        # Maximize a
+        # Minimize b
+        a = b = str(num)
+        for d in a:
+            if d != '9':
+                a = a.replace(d, '9')
+                break
+        
+        if b[0] != '1':
+            b = b.replace(b[0], '1')
+        else:
+            for d in b[1:]:
+                if d not in '10':
+                    b = b.replace(d, '0')
+                    break
+        return int(a) - int(b)
         
