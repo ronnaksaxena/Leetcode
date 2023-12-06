@@ -1,20 +1,28 @@
 class Solution:
     def maximalNetworkRank(self, n: int, roads: List[List[int]]) -> int:
-        graph = collections.defaultdict(set)
-        # Create Graph O(E)
-        for cityA, cityB in roads:
-            graph[cityA].add(cityB)
-            graph[cityB].add(cityA)
-        maxRank = 0
-        # Check all possible pairs O(V * V-1)
-        for cityA in range(n):
-            for cityB in range(cityA+1, n):
-                rank = len(graph[cityA]) + len(graph[cityB])
-                # If cities connected only count edge once
-                if cityB in graph[cityA]:
-                    rank -= 1
-                maxRank = max(maxRank, rank)
-        return maxRank
-
-
+        '''
+        adj List of node: {neighbors}
         
+        loop through all pairs
+        0: {1, 3}
+        1: {0, 2, 3}
+        
+        maxRank is length of superset
+        if cityA and cityB in superset - 1
+        
+        '''
+        
+        graph = collections.defaultdict(set)
+        for a, b in roads:
+            graph[a].add(b)
+            graph[b].add(a)
+        
+        maxRank = 0
+        for i in range(n):
+            for j in range(i+1, n):
+                rank = len(graph[i]) + len(graph[j])
+                if i in graph[j] and j in graph[i]:
+                    rank -= 1
+                maxRank = max(rank, maxRank)
+        return maxRank
+                    
