@@ -8,7 +8,6 @@ class Solution:
                 newR, newC = r+dR, c+dC
                 if 0 <= newR < ROWS and 0 <= newC < COLS and grid[newR][newC] not in [0, '#']:
                     neighbors.append((newR, newC))
-            neighbors.sort(key = lambda x: grid[x[0]][x[1]])
             return neighbors
         def backtrack(r, c):
             oldVal = grid[r][c]
