@@ -1,6 +1,7 @@
 class Solution:
     def getMaximumGold(self, grid: List[List[int]]) -> int:
         ROWS, COLS = len(grid), len(grid[0])
+        # Returns a list of possible neighbors to continue traversing
         def findNeighbors(r,c):
             nei = [(0, -1), (0, 1), (-1, 0), (1, 0)]
             neighbors = []
@@ -9,6 +10,8 @@ class Solution:
                 if 0 <= newR < ROWS and 0 <= newC < COLS and grid[newR][newC] not in [0, '#']:
                     neighbors.append((newR, newC))
             return neighbors
+        
+        # Backtrack to find most optimal path
         def backtrack(r, c):
             oldVal = grid[r][c]
             grid[r][c] = '#'
