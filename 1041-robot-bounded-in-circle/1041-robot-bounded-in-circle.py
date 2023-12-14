@@ -23,5 +23,9 @@ class Solution:
                 else:
                     # turn right
                     d = d + 1 if d < 3 else 0
+        '''
+        After 4 iterations if there is a loop it must be back at 0,0
+        Direction does not matter since it will just do a loop in a different direction
+        '''
         return x == 0 and y == 0
         
