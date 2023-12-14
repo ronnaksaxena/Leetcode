@@ -1,28 +1,27 @@
 class Solution:
     def isRobotBounded(self, instructions: str) -> bool:
-        x, y = 0, 0
-        direc = 0 # 0 is n, 1 is r, 2 is s, 3 is l. => %4
-        # Simulate
+        x, y, d = 0, 0, 0
+        # d 0 is up, 1 is right, 2 is down, 3 is left
         for _ in range(4):
-            for i in instructions:
-                if i == 'G':
-                    if direc == 0:
+            for m in instructions:
+                if m == 'G':
+                    if d == 0:
+                        # up
                         y += 1
-                    elif direc == 1:
+                    elif d == 1:
+                        # right
                         x += 1
-                    elif direc == 2:
+                    elif d == 2:
+                        # down
                         y -= 1
                     else:
+                        # left
                         x -= 1
-                elif i == 'L':
-                    direc = (direc-1)%4
+                elif m == 'L':
+                    # turn left
+                    d = d-1 if d > 0 else 3
                 else:
-                    # R
-                    direc = (direc+1)%4
-        # Not a limit cycle
-        return x == 0 and y == 0 and direc == 0
-'''
-Time: O(n)
-Space: O(1)
-'''
+                    # turn right
+                    d = d + 1 if d < 3 else 0
+        return x == 0 and y == 0
         
