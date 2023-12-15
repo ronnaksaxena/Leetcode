@@ -1,11 +1,13 @@
 class Solution:
     def deleteAndEarn(self, nums: List[int]) -> int:
-        cnt = collections.Counter(nums)
-        maxNum = max(nums)
+        freq = collections.Counter(nums)
         @cache
         def dp(i):
-            if i <= 1:
-                return cnt.get(i, 0)
-            return max(dp(i-1), dp(i-2) + (cnt[i] * i))
-        return dp(maxNum)
+            if i == 0:
+                return 0
+            if i == 1:
+                return freq[1]
+            else:
+                return max(freq[i] * i + dp(i-2), dp(i-1))
+        return dp(max(nums))
         
