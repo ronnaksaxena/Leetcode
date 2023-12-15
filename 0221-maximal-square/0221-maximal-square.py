@@ -9,7 +9,7 @@ class Solution:
                 elif num == '1':
                     dp[rowIdx][colIdx] = min(dp[rowIdx-1][colIdx], dp[rowIdx][colIdx-1], dp[rowIdx-1][colIdx-1]) + 1
         ans = max(max(x) for x in dp)
-        return ans * ans
+        return ans **2
                 
         
         
