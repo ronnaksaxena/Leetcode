@@ -1,20 +1,23 @@
 class Solution:
     def combinationSum3(self, k: int, n: int) -> List[List[int]]:
-        
-        output = []
-        
-        def backtrack(cur, i, sumLeft):
-            nonlocal output
-            if sumLeft < 0 or i > 10 or len(cur) > k:
+        results = []
+        def backtrack(remain, comb, next_start):
+            if remain == 0 and len(comb) == k:
+                # make a copy of current combination
+                # Otherwise the combination would be reverted in other branch of backtracking.
+                results.append(list(comb))
                 return
-            if sumLeft == 0 and len(cur) == k:
-                output.append(cur[::])
+            elif remain < 0 or len(comb) == k:
+                # exceed the scope, no need to explore further.
                 return
-            for num in range(i, 10):
-                cur.append(num)
-                backtrack(cur, num+1, sumLeft - num)
-                cur.pop()
-        
-        backtrack([], 1, n)
-        return output
-        
+
+            # Iterate through the reduced list of candidates.
+            for i in range(next_start, 10):
+                comb.append(i)
+                backtrack(remain-i, comb, i+1)
+                # backtrack the current choice
+                comb.pop()
+
+        backtrack(n, [], 1)
+
+        return results
