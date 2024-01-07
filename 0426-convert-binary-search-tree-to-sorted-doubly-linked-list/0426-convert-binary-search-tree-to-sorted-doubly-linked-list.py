@@ -24,20 +24,23 @@ class Solution:
             return root
         head, tail = None, None
         
-        def dfs(node):
+        def dfs(root):
             nonlocal head
             nonlocal tail
-            if not node:
-                return
-            dfs(node.left)
-            # process node
-            if not head:
-                head = node
-            if tail:
-                tail.right = node
-            node.left = tail
-            tail = node
-            dfs(node.right)
+            stack = []
+            cur = root
+            while stack or cur:
+                while cur:
+                    stack.append(cur)
+                    cur = cur.left
+                cur = stack.pop()
+                if not head:
+                    head = cur
+                if tail:
+                    tail.right = cur
+                cur.left = tail
+                tail = cur
+                cur = cur.right
             
         dfs(root)
         # Connect tail and head
