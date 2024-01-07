@@ -10,7 +10,6 @@ class Solution:
 
     def pickIndex(self) -> int:
         ran = random.randint(1,self.total_sum)
-        l, r = 0, len(self.prefix_sums)
         return bisect.bisect_left(self.prefix_sums, ran)
         
 
