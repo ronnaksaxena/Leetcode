@@ -9,8 +9,16 @@ class Solution:
         self.total_sum = prefix_sum
 
     def pickIndex(self) -> int:
-        ran = random.randint(1,self.total_sum)
-        return bisect.bisect_left(self.prefix_sums, ran)
+        ran = random.randint(1,self.total_sum) # First p sum has to be >= 1
+        # right boundary is highestSum
+        l, r = 0, len(self.prefix_sums)
+        while l < r:
+            m = l + (r-l) // 2
+            if self.prefix_sums[m] < ran:
+                l = m + 1
+            else:
+                r = m
+        return l
         
 
 
