@@ -14,6 +14,8 @@ class Solution:
         - loop through chars in order
             - if char in map:
                 - append char * freq to reOrderedS list
+                - set freq to 0 for next loop
+        - loop through map again to get remaining elements not in order
         - return joined list
         
         N is length of s
