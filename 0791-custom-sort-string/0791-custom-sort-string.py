@@ -28,10 +28,11 @@ class Solution:
         for c in order:
             if c in freq:
                 reOrderedS.append(c * freq[c])
-                
-        remainingChars = set(s).difference(set(order))
-        for c in remainingChars:
-            reOrderedS.append(c * freq[c])
+                freq[c] = 0
+
+        # Get characters missing from s that are missing in order
+        for c, f in freq.items():
+            reOrderedS.append(c * f)
         
         return ''.join(reOrderedS)
         
