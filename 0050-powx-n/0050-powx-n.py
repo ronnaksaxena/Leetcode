@@ -1,5 +1,11 @@
 class Solution:
     def myPow(self, x: float, n: int) -> float:
+        '''
+        key idea: x^n == (x*x)^(n//2) if n is even
+        Time: LogN
+        Space: LogN
+        '''
+        
         if n == 0:
             return 1.0
         elif n == 1:
