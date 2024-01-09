@@ -35,7 +35,7 @@ class Solution:
         subArrSum = collections.defaultdict(int) # {sum: number of subarrays with sum}
         runningSum = 0
         totalArrs = 0
-        subArrSum[0] = 1
+        subArrSum[0] = 1 # Edge case to get subarray A[0] -> A[i]
         
         for n in nums:
             runningSum += n
