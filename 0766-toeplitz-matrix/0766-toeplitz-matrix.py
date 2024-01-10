@@ -15,11 +15,15 @@ class Solution:
         
         return True
         
-        '''
+        For follow up groupp by diagonal (r-c)
         
+        '''
+        groups = {}
         for r in range(len(matrix)):
             for c in range(len(matrix[0])):
-                if r -1 >= 0 and c - 1 >= 0 and matrix[r-1][c-1] != matrix[r][c]:
+                if r - c not in groups:
+                    groups[r-c] = matrix[r][c]
+                elif matrix[r][c] != groups[r-c]:
                     return False
         return True
         
