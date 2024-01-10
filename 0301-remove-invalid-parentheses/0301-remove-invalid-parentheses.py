@@ -3,7 +3,10 @@ from collections import deque
 class Solution:
     
     def removeInvalidParentheses(self, s: str) -> List[str]:
-
+        # Edge case empty s
+        if len(s) == 0:
+            return [""]
+        
         # helper to check if the expression is valid
         def isValid(expr):
             count = 0
@@ -18,16 +21,10 @@ class Solution:
                     return False
             return count == 0
 
-        if len(s) == 0:
-            return [""]
 
-        visited = set()
-
-        queue = deque()
-        queue.append(s)
-        visited.add(s)
-
-        found = False
+        visited = {s}
+        queue = deque([s])
+        minRemovalFound = False
         output = []
 
         while queue:
@@ -35,12 +32,14 @@ class Solution:
 
             if isValid(expr):
                 output.append(expr)
-                found = True
+                minRemovalFound = True
 
-            if found:
+            if minRemovalFound:
                 continue
-
+                
+            # Search all removals to see if you van find valid parenthesis
             for i in range(len(expr)):
+                # Can't remove letters
                 if expr[i] not in '()':
                     continue
 
@@ -48,5 +47,6 @@ class Solution:
                 if candidate not in visited:
                     queue.append(candidate)
                     visited.add(candidate)
-    
+                    
+        # If not candidates found return empty string
         return output if output else [""]
