@@ -54,6 +54,7 @@ class Solution:
                 insertValNode = Node(insertVal, cur.next)
                 cur.next = insertValNode
                 return head
+            # Move ptr along
             cur = cur.next
         # Case 4: All nodes are same value
         # 1-> 1 -> 1 -> 1
