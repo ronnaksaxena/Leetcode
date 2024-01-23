@@ -9,56 +9,41 @@ class Node:
 class Solution:
     def insert(self, head: 'Optional[Node]', insertVal: int) -> 'Node':
         '''
-        input: head of single linked list
-        output: head of list after insertion
+        Idea: two pointer traversal to find insertion
         
-        - if null make a single node that points to itself
-        - Can be duplicate values and can be 0
+        EDGE CASE: empty list -> create new node and return
+        EDGE CASE: singleton list -> have head next point to new element
         
-        Case 1: Null list
-        - return insert val node
+        loop while cur.next != head
+            - check for prev.val <= insertVal <= cur.val:
+                init new node and connect ptrs
+                return head
+            - check if at edge of list
+                cur.val > cur.next.val and insertVal < cur.next.val
+            
         
-        Case 2: Insert into middle of list
-        -return head
-        
-        Case 3: Insert at edge of list (between smallest and largest)
-        
-        Case 4: All nodes in list are same value
-         
-         Time: O(n) where n is nodes in list
-         Space: O(1) no extra memory
-         
         '''
-        # Case 1: empty list
+        # empty list
         if not head:
-            insertValNode = Node(insertVal)
-            insertValNode.next = insertValNode
-            return insertValNode
+            node = Node(insertVal)
+            node.next = node
+            return node
         cur = head
-        
-        # Loop once
         while cur.next != head:
-            # Case 2: insert in middle of list
-            # 1  -> 3
-            #    2
-            # cur    cur.next
             if cur.val <= insertVal <= cur.next.val:
-                insertValNode = Node(insertVal, cur.next)
-                cur.next = insertValNode
+                node = Node(insertVal, cur.next)
+                cur.next = node
                 return head
-            # Case 3 insertion at edge of list
-            #     1  -> 2
-            #           cur
-            #   0         3
-            elif (cur.val > cur.next.val) and (insertVal < cur.next.val or insertVal > cur.val):
-                insertValNode = Node(insertVal, cur.next)
-                cur.next = insertValNode
+            # Insert node at edge of list
+            if (cur.val > cur.next.val) and (insertVal < cur.next.val or insertVal > cur.val):
+                node = Node(insertVal, cur.next)
+                cur.next = node
                 return head
-            # Move ptr along
             cur = cur.next
-        # Case 4: All nodes are same value
-        # 1-> 1 -> 1 -> 1
-        # Insert at any position
-        insertValNode = Node(insertVal, cur.next)
-        cur.next = insertValNode
+        # All elements in list are same
+        # Insert anywhere
+        node = Node(insertVal,cur.next)
+        cur.next = node
         return head
+                
+        
