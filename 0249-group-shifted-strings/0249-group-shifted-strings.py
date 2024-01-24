@@ -1,29 +1,43 @@
 class Solution:
     def groupStrings(self, strings: List[str]) -> List[List[str]]:
         '''
-        a b c
+        -lowercase letters
+        - non null
         
-        b c d
-         +1 +1
+        'a' cant be shifted to any char
+        "abc" "bcd" "xyz"
+          1 1   1 1.  1 1
+          
+          Edge case we need to mod our shifts by 26 to handle z
+          -1%26 => 25
+          (ASCII(a) - ASCII(b)) % 26 => 25
+          
+         Idea: Hash table {steps away from each char: [strings]}
          
-        Generate hash key by finding root string where s[0] starts with a
+        ["abc","bcd","acef","xyz","az","ba","a","z"]
         
-        Time: O(NxK) 
-        Space: O(NxK) where n is strings in strings and K is max length of a string
+        {
+            (1,1): ['abc', 'bcd', 'xyz']
+            (25):
+            
+        }
+        
+        - helper function to generate hash tuple
+        - loop thought all strings and store groups by hash in our hash table
+        
         '''
+        def generateHash(s):
+            order = []
+            for i in range(1, len(s)):
+                second = ord(s[i]) - ord('a')
+                first = ord(s[i-1]) - ord('a')
+                order.append((second-first)%26)
+            return tuple(order)
+                             
         
-        def shiftLetter(c, shiftAmt):
-            shiftAmt = (ord(c) - shiftAmt - ord('a'))% 26
-            return chr(shiftAmt + ord('a'))
-        
-        def getHash(word):
-            # Find shift amount from first letter
-            shiftAmt = ord(word[0]) - ord('a')
-            res = ''.join(shiftLetter(c, shiftAmt) for c in word)
-            return res
-        
-        group = collections.defaultdict(list) # {hash of letter: [list of words with that hash]}
+        groups = collections.defaultdict(list)
         for s in strings:
-            hashV = getHash(s)
-            group[hashV].append(s)
-        return group.values()
+            groups[generateHash(s)].append(s)
+
+        return groups.values()
+        
