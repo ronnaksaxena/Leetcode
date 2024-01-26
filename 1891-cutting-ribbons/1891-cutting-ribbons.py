@@ -1,21 +1,39 @@
 class Solution:
     def maxLength(self, ribbons: List[int], k: int) -> int:
-        # The minumum length of the ribbon that we can cut is 1
-        start = 1
-        # The maximum length of the ribbon can be the maximum element in the list
-        end = max(ribbons)
+        '''
+        - can either cut ribbon or not cut, can through away excess ribbon
+        - return 0 if not possible to make k ribbons
         
-        # In this binary search, we are trying to go through the origin list and figure out which integer(from 1 -> ribbon of max length) is the deired length for the the target k pieces
-        while(start <= end):
-            mid = start + (end - start) // 2
-            res = 0
-            for i in ribbons:
-                res += i // mid
-            # If the value is >= target, we know that there could be a larger integer that will satisfy the same conditon
-            if res >= k:
-                start = mid+1
+        if ribbon is size x and we cut each piece into size y
+            # of equal lenght ribbons is x // y
+        
+        smallest possible lenghth is 1
+        largest possible length is max(ribbons)
+        
+        Ideas: Binary search between1 and max(ribbons) to find largest cut size
+        - helper function (cutSize) returns the number of ribbons yeielded
+        - Bsearch betwen 1 -> max(ribbosn):
+            cutSize = median of bounds
+            if helper(cutSize) >= k:
+                l = cutSize
             else:
-            # If lesser than k, then there could be a value lesser than the mid that could satisfy the condition
-                end = mid -1
-        return end
+                r = cutSize - 1 # cutSize too big, not enough pieces
+        
+        check if 1 works otherwise 0
+        
+        Time: O(log(max ribbon))
+        Space: O(1)
+        '''
+        
+        def ribbonPieces(cutSize):
+            return sum(r // cutSize for r in ribbons)
+        
+        l, r = 1, max(ribbons)
+        while l <= r:
+            cutSize = l + (r-l)//2
+            if ribbonPieces(cutSize) >= k:
+                l = cutSize + 1
+            else:
+                r = cutSize - 1
+        return r
         
