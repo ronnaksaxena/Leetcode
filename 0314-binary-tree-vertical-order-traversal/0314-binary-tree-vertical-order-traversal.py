@@ -33,7 +33,7 @@ class Solution:
         Loop through column indices in map from lowest index to highest (right -> left)
             initialize my ouptut
             
-        time: O(n + log(width of tree)) n is nodes in tree
+        time: O(n + (width of tree)log(width of tree)) n is nodes in tree
         space: O(n) for q and hashmap
         '''
         # EDGE CASE
