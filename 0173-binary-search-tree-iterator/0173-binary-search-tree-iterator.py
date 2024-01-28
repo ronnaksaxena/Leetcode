@@ -8,22 +8,24 @@ class BSTIterator:
 
     def __init__(self, root: Optional[TreeNode]):
         self.stack = []
-        while root:
-            self.stack.append(root)
-            root = root.left
+        self.cur = root
+        while self.cur:
+            self.stack.append(self.cur)
+            self.cur = self.cur.left
+        
 
     def next(self) -> int:
-        node = self.stack.pop()
-        value = node.val
-        node = node.right
-        while node:
-            self.stack.append(node)
-            node = node.left
-        return value
+        while self.cur:
+            self.stack.append(self.cur)
+            self.cur = self.cur.left
+        self.cur = self.stack.pop()
+        nextVal = self.cur.val
+        self.cur = self.cur.right
+        return nextVal
         
 
     def hasNext(self) -> bool:
-        return len(self.stack) > 0
+        return self.cur != None or len(self.stack) > 0
         
 
 
@@ -31,29 +33,38 @@ class BSTIterator:
 # obj = BSTIterator(root)
 # param_1 = obj.next()
 # param_2 = obj.hasNext()
-
 '''
-        7
-    /       \
-    3       15
-        /       \
-        9       20
-        
-        
-    self.stack = [20]
-    
-    node = stack.pop()
-    value = self.node.val
-    
-    node = node.right
-    while node:
-        stack.append(node)
-        node = node.left
-    
-    3 7 9 15
-    
-    initalize adding left children to stack
-    next by using algo
-    hasNext == if stack
+- Assume valid next calls
+- Input tree can be null
+- Can be duplicate values
+- Valid BST
 
+    Idea: In order traversal to get sorted order (least -> greatest)
+    - stack iterative in order traversal
+    
+        7
+        /\
+       3  15
+       /\    /\
+            9 20
+
+    stack = [7, 3]
+    cur = None
+    
+    Next(self) => O(1)
+    edge case left leaning tree
+        while cur: 
+            stack push cur
+            cur = cur left
+        cur = stack pop
+        nextVal = cur.val
+        cur = cur.right
+        return nextVal
+    
+    hasNext => O(1)
+        return cur or stack
+       
+        
+        
+        
 '''
