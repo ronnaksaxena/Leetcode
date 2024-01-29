@@ -12,6 +12,9 @@ class Solution:
                 closest = root.val
             elif abs(root.val-target) == abs(closest-target):
                 closest = min(root.val, closest)
-            root = root.left if target < root.val else root.right
+            if target < root.val:
+                root = root.left
+            else:
+                root = root.right
         return closest
         
