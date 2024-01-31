@@ -1,22 +1,22 @@
 class Solution:
     def exclusiveTime(self, n: int, logs: List[str]) -> List[int]:
         output = [0 for _ in range(n)]
-        stack = [] # [pId, time]
+        stack = [] # [(fnID, startTime)]
         
-        for log in logs:
-            pId, operation, timestamp = log.split(':')
-            pId = int(pId)
-            timestamp = int(timestamp)
-            
+        for l in logs:
+            fnID, operation, timeStamp = l.split(':')
+            fnID = int(fnID)
+            timeStamp = int(timeStamp)
             if operation == 'start':
-                stack.append([pId, timestamp])
+                stack.append((fnID, timeStamp))
             else:
-                p, t = stack.pop()
-                duration = timestamp - t + 1
-                output[p] += duration
-                # If program was halted decriment by this program duration
+                _, startTime = stack.pop()
+                duration = timeStamp - startTime + 1 # to include current time
+                output[fnID] += duration
+                # Decriment paused fn times
                 if stack:
                     output[stack[-1][0]] -= duration
-            
         return output
+                
+            
         
