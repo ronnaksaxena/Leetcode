@@ -6,7 +6,7 @@ class Solution:
         
         for i, t in enumerate(temperatures):
             while stack and temperatures[stack[-1]] < t:
-                wait= i - stack[-1]
+                wait = i - stack[-1]
                 output[stack.pop()] = wait
             stack.append(i)
         return output
