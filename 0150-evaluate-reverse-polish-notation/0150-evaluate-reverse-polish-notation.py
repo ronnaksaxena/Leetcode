@@ -58,6 +58,6 @@ class Solution:
                     # division
                     second = stack.pop()
                     first = stack.pop()
-                    # handles negative divisor ex: -6 // -132 => 0
+                    # handles negative divisor ex: 6 // -132 => 0
                     stack.append(int(first / second))
         return sum(stack)
