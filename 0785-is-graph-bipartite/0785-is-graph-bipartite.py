@@ -11,7 +11,7 @@ class Solution:
                     for nei in graph[node]:
                         if nei not in color:
                             stack.append(nei)
-                            color[nei] = color[node] ^ 1
+                            color[nei] = 1 if color[node] == 0 else 0
                         elif color[nei] == color[node]:
                             # print(nei, node, color)
                             return False
