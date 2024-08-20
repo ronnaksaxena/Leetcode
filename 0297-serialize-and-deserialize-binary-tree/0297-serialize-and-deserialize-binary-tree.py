@@ -5,6 +5,36 @@
 #         self.left = None
 #         self.right = None
 
+'''
+            1
+          /    \
+        2       3
+     /.   \    /   \
+     n     n   4   5
+                /\ /\
+                n n n n
+
+    "1, 2, Null, Null, 3, 4, null, null, 5, null, null'
+
+
+    (1)
+   /.   \
+   (2)  (3)
+   / \.         /. \
+  null null.   (4.) (5)
+            /   \   /   \
+            null null null null
+
+            serialize
+            preorder + concat
+
+            deseralize
+            convert string to list
+            build new tree in preorder
+
+            time complexity of O(N) where n is numbe of nodes
+            space: complexity of O(H) where h is height of tree for recursive stack
+'''
 class Codec:
 
     def serialize(self, root):
@@ -13,10 +43,11 @@ class Codec:
         :type root: TreeNode
         :rtype: str
         """
-        def preOrder(node):
-            return str(node.val) + ',' + preOrder(node.left) + preOrder(node.right) if node else 'None,'
+        def dfs(node):
+            return [str(node.val)] + dfs(node.left) + dfs(node.right) if node else ['null']
         
-        return preOrder(root)
+        return ','.join(dfs(root))
+
         
 
     def deserialize(self, data):
@@ -25,18 +56,20 @@ class Codec:
         :type data: str
         :rtype: TreeNode
         """
-        vals = data.split(',')
-        def dfs(nodes):
-            cur = vals.pop(0)
-            if cur == 'None':
+        data = data.split(',')
+        def dfs(data):
+            if not data:
                 return None
-            root = TreeNode(int(cur))
-            root.left = dfs(nodes)
-            root.right = dfs(nodes)
+            nodeVal = data.pop(0)
+            if nodeVal == 'null':
+                return None
+            root = TreeNode(nodeVal)
+            root.left = dfs(data)
+            root.right = dfs(data)
             return root
-        
-        return dfs(vals)
-        
+
+        return dfs(data)
+
         
 
 # Your Codec object will be instantiated and called as such:
