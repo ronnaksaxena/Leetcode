@@ -35,8 +35,8 @@ class Solution:
             while q:
                 for _ in range(len(q)):
                     cur = q.popleft()
-                    if cur in leaves and cur != rootNode:
-                        validPairs.add(tuple(sorted([rootNode, cur], key = lambda x: x.val)))
+                    if cur in leaves and cur != rootNode and (rootNode, cur) not in validPairs and (cur, rootNode) not in validPairs:
+                        validPairs.add((rootNode, cur))
                     for nei in graph[cur]:
                         if nei not in visited:
                             q.append(nei)
