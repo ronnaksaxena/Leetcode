@@ -1,25 +1,31 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        # Make adj list
-        graph = collections.defaultdict(list)
+
+        # If we can created top sort with all courses it is possible
         in_degree = [0 for _ in range(numCourses)]
+        graph = collections.defaultdict(list)
+
         for post, pre in prerequisites:
-            graph[pre].append(post)
             in_degree[post] += 1
+            if pre not in in_degree:
+                in_degree[pre] = 0
+            graph[pre].append(post)
         
-        # q for Kahn's top sort
         q = collections.deque()
-        for i in range(len(in_degree)):
-            if not in_degree[i]:
-                q.append(i)
+        for course, deg in enumerate(in_degree):
+            if not deg:
+                q.append(course)
+        
         order = []
         while q:
             cur = q.popleft()
             order.append(cur)
-            for nei in graph[cur]:
-                in_degree[nei] -= 1
-                if not in_degree[nei]:
-                    q.append(nei)
-        return len(order) == numCourses
+
+            for post in graph[cur]:
+                in_degree[post] -= 1
+                if not in_degree[post]:
+                    q.append(post)
         
+        return len(order) == numCourses
+
         
