@@ -1,22 +1,20 @@
 class Solution:
     def isValid(self, s: str) -> bool:
-        
-        pairings = {
+        matches = {
             ')': '(',
-            '}': '{',
-            ']': '['
+            ']': '[',
+            '}': '{'
         }
-        
+
         stack = []
+
         for c in s:
-            
-            if c in pairings:
-                if not stack or stack[-1] != pairings[c]:
-                    return False
-                else:
-                    stack.pop()
-            else:
+            if c in '({[':
                 stack.append(c)
-        
+            elif stack and stack[-1] == matches[c]:
+                stack.pop()
+            else:
+                return False
+
         return len(stack) == 0
         
