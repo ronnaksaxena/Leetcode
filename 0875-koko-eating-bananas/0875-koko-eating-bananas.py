@@ -1,24 +1,16 @@
 class Solution:
     def minEatingSpeed(self, piles: List[int], h: int) -> int:
-        
         l, r = 1, max(piles)
-        
+
         while l < r:
-            
-            k = l + (r-l)//2
-            timeNeeded = 0
+            # rate is the median in this case
+            rate = l + (r-l)//2
+            hoursNeeded = 0
             for p in piles:
-                timeNeeded += math.ceil(p/k)
-            # too slow
-            if timeNeeded > h:
-                l = k + 1
+                hoursNeeded += math.ceil(p/rate)
+            if hoursNeeded > h:
+                l = rate + 1
             else:
-                r = k
-                
-        return l
-                
-                
-            
-                
-            
+                r = rate
         
+        return l
