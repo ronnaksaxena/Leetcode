@@ -28,6 +28,12 @@ class Solution:
                 stack.append(0)
             else:
                 layerScore = stack.pop()
+                '''
+                Layer case:
+                () [0, 0] => score of 1 => [1]
+                ()() [0, 1] => score of 2 => [2]
+
+                '''
                 stack[-1] += layerScore * 2 if layerScore > 0 else 1
         return stack.pop()
         
