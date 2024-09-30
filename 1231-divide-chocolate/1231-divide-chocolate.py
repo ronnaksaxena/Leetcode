@@ -27,6 +27,14 @@ class Solution:
         right = sum(sweetness) // (k + 1)
 
         while left < right:
+            '''
+            Why + 1?
+            T T T F F
+                l r
+                m will be where l is and eval to True
+            new boundary will be [l, r] and be inf loop
+
+            '''
             mid = 1 + left + (right - left) // 2
             if isSweetEnough(mid):
                 left = mid
