@@ -36,4 +36,8 @@ class Solution:
                 '''
                 stack[-1] += layerScore * 2 if layerScore > 0 else 1
         return stack.pop()
+
+    '''
+    Time & Space O(N)
+    '''
         
