@@ -12,7 +12,8 @@ class Solution:
             -if out of gas (fuel < 0) can retroactively fill fuel by looking at past large gas stastions
             -if heap is empty and fule is still < 0 there is no solution
 
-
+        Time: O(NlogN) to iterate through stastions & heap operations
+        Space: O(N) in worst case use heap
         '''
         stations.append([target, float('inf')])
         prev, curFuel = 0, startFuel
