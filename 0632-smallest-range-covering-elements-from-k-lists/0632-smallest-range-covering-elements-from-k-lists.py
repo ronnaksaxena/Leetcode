@@ -1,53 +1,79 @@
 class Solution:
     def smallestRange(self, nums: List[List[int]]) -> List[int]:
         '''
-        smallest range is min(b-a) for range [a,b] if there is a tie; range1[0] < range2[0] menas range1 smaller
+        Qs:
+        - diff is smaller, if tie first element <
+        - 105 <= nums[i][j] <= 105
+        - nums sorted and can be duplicates
+        - output: [start, end] inclusive
 
-        [4,10,15,24,26]
-        [0,9,12,20]
-        [5,18,22,30]
-        ->
-        use each list is already sorted
-        start with range [0,5]
-        can increase L or decrease H
-            - since the arrays are already sort we should increase L and see if we can find a smaller range
-            - since we traverse thise way if there is a tie we know our current range is smaller
+        nums = 
+        [[4,10,15,24,26],
+         [0,9,12,20],
+         [5,18,22,30]]
 
-        STOP iteration at last elem of a arr since no more elements will be larger than min and have an element in all arrays
+        Brute Force: NLogN * k where n is total elements in list and k is # of lists
+        - put all elements into a list
+        - sort the list
+        - [l ..... r]
+            check that every list have an element in the range
+            terminate the loop
 
-        Time: O(logk * n) where k is # of lists and n is total elements
-        Space: O(k)
+        Priority Queue
+        nums = 
+        [[4,10,15,24,26],
+         [0,9,12,20],
+                  stop
+         [5,18,22,30]]
+
+        (element Value, listIndex, numIndex)
+        pq = [ 5, 10, 9] => minHeap of size K
+        max = 10
+        L increases
+        ans = [newL, max] => [0, 5]
+
+        Algo:
+        1. populate my initial pq with first elements
+        2. loop thorught q
+            - pop smallest element
+            - check if new range is smaller
+                - terminate if we've reached the end of a list
+            - push next element in that list onto priority
+
+        Time logK * N where K is # of lists of lists and N is total elements
+        Space: O(K) will never have more than K elements in pq
+
+
         '''
 
-        k = len(nums) # number of lists
-        pq = [] # (elem, list index, element index)
-        mmax = float('-inf')
+        def isRangeSamller(range1, currentAns):
+            # Note that currentAns[0] < range[0]
+            print(range1, currentAns)
+            return (range1[1]-range1[0]) < (currentAns[1] - currentAns[0])
 
-        # init pq
-        for i in range(k):
-            heapq.heappush(pq, (nums[i][0], i, 0))
-            mmax = max(mmax, nums[i][0])
-        
-        # Window is [top of pq, mmax]
-        ans = [pq[0][0], mmax]
+        pq = []
+        rangeMax = float('-inf')
 
-        while True:
-            _, listIndex, numIndex = heapq.heappop(pq)
-            # Terminate
-            # No greater element will have an element in all lists
-            if numIndex == len(nums[listIndex]) -1:
+        for listIndex, val in enumerate(nums):
+            heapq.heappush(pq, (val[0], listIndex, 0))
+            rangeMax = max(rangeMax, val[0])
+        ans = [pq[0][0], rangeMax]
+        while pq:
+            currentElem, listIndex, numIndex = heapq.heappop(pq)
+
+            # Out of elements in list
+            if numIndex == len(nums[listIndex]) - 1:
                 return ans
+            
+            nextElem = nums[listIndex][numIndex+1]
+            rangeMax = max(rangeMax, nextElem)
 
-            # Compare to nextNum bc our old range included nums[listIndex][numIndex] and want to check if we can get a smaller one by adding ums[listIndex][numIndex+1]
-            nextNum = nums[listIndex][numIndex+1]
-            mmax = max(mmax, nextNum)
-            # Push next index onto pq
-            # Need to do this before updating answer to maintain state of range
-            heapq.heappush(pq, (nextNum, listIndex, numIndex+1))
-            # update answer
-            if (mmax - pq[0][0]) < (ans[1]-ans[0]):
-                ans = [pq[0][0], mmax]
+            heapq.heappush(pq, (nextElem, listIndex, numIndex+1))
+            
+            if isRangeSamller([pq[0][0], rangeMax], ans):
+                ans = [pq[0][0], rangeMax]
 
+            
 
         return ans
 
