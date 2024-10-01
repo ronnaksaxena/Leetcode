@@ -1,29 +1,35 @@
 class Solution:
     def minimumTime(self, n: int, relations: List[List[int]], time: List[int]) -> int:
-        indegree = [0] * n
+        '''
 
-        # {prevCourse: [nextCourses]}
+        1 -> 
+            2 -> 3
+        4 ->
+
+        TimeNeeded[3] = max(prevCourses[2]) + time[2]
+        '''
+
         graph = collections.defaultdict(list)
+        inDegree = {i: 0 for i in range(1, n+1)}
+        time = {course: t for course, t in enumerate(time,1)}
 
-        for prev, nextCourse in relations:
-            graph[prev-1].append(nextCourse-1)
-            indegree[nextCourse-1] += 1
-        
-        max_time = [0] * n
+        for prev, post in relations:
+            graph[prev].append(post)
+            inDegree[post] += 1
+
         q = collections.deque()
-        for course in range(n):
-            if indegree[course] == 0:
+        maxTimes = {i: 0 for i in range(1, n+1)}
+        for course, deg in inDegree.items():
+            if not deg:
                 q.append(course)
-                max_time[course] = time[course]
+                maxTimes[course] = time[course]
         
-        # Kahns
         while q:
-            node = q.popleft()
-            for neighbor in graph[node]:
-                max_time[neighbor] = max(max_time[neighbor], max_time[node] + time[neighbor])
-                indegree[neighbor] -= 1
-                if indegree[neighbor] == 0:
-                    q.append(neighbor)
-        return max(max_time)
-
+            curCourse = q.popleft()
+            for nextCourse in graph[curCourse]:
+                maxTimes[nextCourse] = max(maxTimes[nextCourse], time[nextCourse] + maxTimes[curCourse])
+                inDegree[nextCourse] -= 1
+                if not inDegree[nextCourse]:
+                    q.append(nextCourse)
+        return max(maxTimes.values())
         
