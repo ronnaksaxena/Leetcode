@@ -1,54 +1,67 @@
-class UnionFind:
+import collections
+from typing import List
+
+class Uf:
     def __init__(self, n):
-        self.root = list(range(n))
-        self.rank = [0] * n
+        # Each node is initially its own parent (root of its component)
+        self.par = [i for i in range(n)]
+        self.rank = [1 for _ in range(n)]
 
     def find(self, node):
-        if self.root[node] == node:
-            return node
+        while self.par[node] != node:
+            self.par[node] = self.par[self.par[node]]  # Path compression
+            node = self.par[node]
+        return node
+    
+    def union(self, n1, n2):
+        p1, p2 = self.find(n1), self.find(n2)
+        if p1 == p2:
+            return False  # No union needed, they are already in the same component
+        # Union by rank
+        if self.rank[p1] > self.rank[p2]:
+            self.par[p2] = p1
+        elif self.rank[p1] < self.rank[p2]:
+            self.par[p1] = p2
         else:
-            self.root[node] = self.find(self.root[node])
-            return self.root[node]
-
-    def union(self, node1, node2):
-        root1 = self.find(node1)
-        root2 = self.find(node2)
-
-        if self.rank[root1] > self.rank[root2]:
-            self.root[root2] = self.root[root1]
-        elif self.rank[root1] < self.rank[root2]:
-            self.root[root1] = self.root[root2]
-        else:
-            self.root[root2] = self.root[root1]
-            self.rank[root1] += 1
-
-    def is_connected(self, node1, node2):
-        return self.find(node1) == self.find(node2)
+            self.par[p2] = p1
+            self.rank[p1] += 1
+        return True  # Return True only if a union occurred (i.e., two different components merged)
 
 class Solution:
     def numIslands2(self, m: int, n: int, positions: List[List[int]]) -> List[int]:
-        dsu = UnionFind(m * n)
-        grid = [[0] * n for _ in range(m)]
-        islands = 0
-        ans = [0] * len(positions)
+        ROWS, COLS = m, n
+        grid = [[0 for _ in range(COLS)] for _ in range(ROWS)]
 
-        for i, (new_r, new_c) in enumerate(positions):
-            # skip repeated islands by doing nothing if it's already an island
-            if grid[new_r][new_c]:
-                ans[i] = islands
+        def getNeighbors(r, c):
+            # Get valid neighbors that are already land (i.e., grid[r][c] == 1)
+            neighbors = []
+            directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+            for dr, dc in directions:
+                newR, newC = r + dr, c + dc
+                if 0 <= newR < ROWS and 0 <= newC < COLS and grid[newR][newC] == 1:
+                    neighbors.append((newR, newC))
+            return neighbors
+
+        uf = Uf(ROWS * COLS)  # Initialize union-find data structure
+        output = []
+        totalIslands = 0  # Track the total number of islands
+
+        for r, c in positions:
+            if grid[r][c] == 1:  # If land is already present, no need to add it
+                output.append(totalIslands)
                 continue
 
-            connected = 0
-            grid[new_r][new_c] = 1
-            for old_r, old_c in ((new_r + 1, new_c), (new_r - 1, new_c), (new_r, new_c + 1), (new_r, new_c - 1)):
-                if old_r in range(m) and old_c in range(n) and grid[old_r][old_c]:
-                    new_land = n * new_r + new_c
-                    old_land = n * old_r + old_c
-                    if not dsu.is_connected(old_land, new_land):
-                        connected += 1
-                        dsu.union(old_land, new_land)
+            grid[r][c] = 1  # Mark the current cell as land
+            currentNode = r * COLS + c  # Calculate the 1D index of the current cell
+            totalIslands += 1  # Assume adding this land creates a new island
 
-            islands += 1 - connected
-            ans[i] = islands
+            # Check all valid neighbors
+            for adjR, adjC in getNeighbors(r, c):
+                neighborNode = adjR * COLS + adjC
+                # If the neighbor is not already in the same island (disjoint), merge them
+                if uf.union(currentNode, neighborNode):
+                    totalIslands -= 1  # Merge reduces the number of islands
 
-        return ans
+            output.append(totalIslands)  # Add the current number of islands after this step
+
+        return output
