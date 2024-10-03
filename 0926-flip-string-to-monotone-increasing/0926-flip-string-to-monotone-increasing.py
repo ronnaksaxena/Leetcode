@@ -1,49 +1,88 @@
 class Solution:
     def minFlipsMonoIncr(self, s: str) -> int:
         '''
-        "00011000"
-              r
-             l
+        Clarifying Questions:
+        - input: String, output: int (min flips needed)
+        - valid input, no memory constraints, not empty string
+        - can be all zeroes or all ones, otherwise zeroes followed by ones
 
-        How many 1s in l? 2
-        How many 0s in r? 3
-
-        total 5 flips?
-
-        flips = left1 + right0
+        EDGE CASES:
+            - s with lenght of 1: return 0
+            - s that we need to flip entirely to 0s or 1s
+            [0,0,0,0]
         
-        prefixSum 1
-        prefixSum 0
 
-        prefixSum1[index] + prefixSum2[index+1]
+        "00011000" -> 00000000
 
-        find min of adding these
+        [left] [right]
+         min(1) min(0)
 
-        time: O(N)
-        Space: O(N)
+         "010110"
+                ^
+                |
+    [left1s -> i) [right0 -> n-1]
+    - come to back to off by 1
+
+    operations = left1s + right0s => flipsNeeded at this current partition
+    ans => min(ans, currentOperationsNeeded)
+
+         - evaluate edge cases
+         -
+
+         idea: prefixSum
+         precompute sum of 1s and sum of 0s
+
+         Algo:
+         - init our prefix sums arrays
+         - iterate throught the input and calculate operations needed for each partition
+            (CAREFUL of off by 1)
+         - return number of flips for optimal partition
+
+         Time: O(n)
+         Space: O(n)
+
         '''
+
         n = len(s)
-        pSum1 = [0] * n
-        pSum0 = [0] * n
-        oneCount = 0
-        zeroCount = 0
+        if n <= 1:
+            return 0
+        
+        # init
+        prefix1 = [0] * n
+        prefix0 = [0] * n
+        if s[0] == '1':
+            prefix1[0] = 1
+        else:
+            prefix0[0] = 1
 
-        for i in range(n):
+        for i in range(1, n):
             if s[i] == '1':
-                oneCount += 1
+                prefix1[i] = prefix1[i-1] + 1
+                prefix0[i] = prefix0[i-1]
             else:
-                zeroCount += 1
-            pSum1[i] = oneCount
-            pSum0[i] = zeroCount
+                prefix0[i] = prefix0[i-1] + 1
+                prefix1[i] = prefix1[i-1]
 
-        # Compare all 1s or all 0s
-        ans = min(pSum1[-1], pSum0[-1])
+        # EDGE cases if all 0s or all 1s
+        ans = min(prefix1[-1], prefix0[-1])
 
-        for split in range(n):
-            left1s = pSum1[split-1]
-            right0s = pSum0[-1] - (pSum0[split-1] if split > 0 else 0)
-            ans = min(ans, left1s + right0s)
+        for i in range(1, n): # double check off by 1
+            left1 = prefix1[i-1]
+            right0 = prefix0[-1] - prefix0[i-1]
+            ans = min(ans, left1+right0)
 
         return ans
+
+        '''
+        "010110"
+              
+        left = [0, n-2]
+        rihgt = [n-1, n-1]
+        p0 = [1, 1, 2, 2, 2, 3]
+        p1 = [0, 1, 1, 2, 3, 3]
+
+
+        '''
+
 
         
