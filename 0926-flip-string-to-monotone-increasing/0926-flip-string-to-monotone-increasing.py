@@ -48,6 +48,10 @@ class Solution:
             return 0
         
         # init
+        '''
+        x 1s in [0->i]
+        (i+1) - x => 0
+        '''
         prefix1 = [0] * n
         prefix0 = [0] * n
         if s[0] == '1':
