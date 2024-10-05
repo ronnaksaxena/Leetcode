@@ -1,32 +1,37 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        # Stack would have at most 2 parts
-        inner = 0
-        outer = 0
-        ans = 0
-        prevSign = '+'
-        s = s.replace(' ', '') # Remove whitestpace
         
-        for i in range(len(s)):
-            
-            if s[i].isnumeric():
-                inner = inner*10 + int(s[i])
-                
-            # if not elif becuase last char could be num
-            if s[i] in '+-/*' or i == len(s)-1:
-                if prevSign == '+':
-                    # Add last term to result
-                    ans += outer
-                    outer = inner
-                elif prevSign == '-':
-                    ans += outer
-                    outer = -inner
-                elif prevSign == '*':
-                    outer *= inner
-                elif prevSign == '/':
-                    outer = int(outer / inner)
-                inner, prevSign = 0, s[i]
-                
-        return ans + outer
-                    
+        def eval(op, first, second=0):
+            if op == '+':
+                return first
+            elif op == '-':
+                return -first
+            elif op == '*':
+                return first * second
+            else:
+                # div
+                return int(first / second)
+
+        stack = [] # like terms
+        cur = 0
+        prevOp = '+'
+        s = s.strip()
+        s += '+'
+        for c in s:
+            if c == ' ':
+                continue
+            elif c.isnumeric():
+                cur = (cur*10) + int(c)
+            else:
+                if prevOp in '+-':
+                    stack.append(eval(prevOp, cur))
+                else:
+                    first = stack.pop()
+                    stack.append(eval(prevOp, first, cur))
+
+                cur = 0
+                prevOp = c
+
+        return sum(stack)
+
             
