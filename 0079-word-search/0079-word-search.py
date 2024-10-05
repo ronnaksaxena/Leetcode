@@ -1,40 +1,39 @@
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
-        '''
-        DFS but don't give up on a path if the search doesn't yield the word
-            have to pop from visited or unmark baord
-        
-        ["A","B","C","E"]
-        ["S","F","C","S"]
-        ["A","D","E","E"]
-        
-        word = 'ABCCED'
-        pre = 'ABCCED'
-        
-        '''
-        rows, cols = len(board), len(board[0])
-        
-        def dfs(r, c, word):
-            # Found word
-            if not word:
-                return True
-            # Not valid path
-            if r < 0 or r >= rows or c < 0 or c >= cols or board[r][c] != word[0]:
-                return False
-            # mark as visited
-            oldLetter = board[r][c]
-            board[r][c] = '#'
-            for dR, dC in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-                newR, newC = r+dR, c+dC
-                if dfs(newR, newC, word[1:]):
-                    return True
-            # Backtrack back to old spot
-            board[r][c] = oldLetter
+        if not board:
             return False
-                
-        for i in range(rows):
-            for j in range(cols):
-                if board[i][j] == word[0]:
-                    if dfs(i, j, word):
+
+        rows, cols = len(board), len(board[0])
+
+        def backtrack(r, c, index):
+            # Found the complete word
+            if index == len(word):
+                return True
+            # Out of bounds or character mismatch
+            if r < 0 or r >= rows or c < 0 or c >= cols or board[r][c] != word[index]:
+                return False
+
+            # Mark the cell as visited by temporarily changing the board character
+            temp = board[r][c]
+            board[r][c] = "#"
+
+            # Explore neighbors in the four possible directions (up, down, left, right)
+            directions = [(-1, 0), (1, 0), (0, 1), (0, -1)]
+            for dr, dc in directions:
+                new_r, new_c = r + dr, c + dc
+                if backtrack(new_r, new_c, index + 1):
+                    return True
+
+            # Restore the original character after backtracking
+            board[r][c] = temp
+
+            return False
+
+        for r in range(rows):
+            for c in range(cols):
+                # Start the backtracking only if the first character matches
+                if board[r][c] == word[0]:
+                    if backtrack(r, c, 0):
                         return True
+
         return False
