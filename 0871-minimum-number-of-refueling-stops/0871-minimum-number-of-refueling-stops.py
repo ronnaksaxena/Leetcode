@@ -61,4 +61,17 @@ class Solution:
 
         return stops
 
+
+        '''
+        Edge Case empty stations ex destination 100, startfueld is 0
+        target = 100, startFuel = 10, 
+        stations = [[10,60],[20,30],[30,30],[60,40], [100]]
+                                            i
+        pq = [ 30, 30]
+        stops = 1
+        prevLocati0n = 20
+        tank = 40
+
+        '''
+
         
