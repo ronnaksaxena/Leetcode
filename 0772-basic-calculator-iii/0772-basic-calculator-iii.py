@@ -66,14 +66,11 @@ class Solution:
                 # operation
                 if prevOperand in '+-':
                     stack.append(evaluate(prevOperand, curNumber))
-                    curNumber = 0
-                    prevOperand = c
-                # closing parenthesis
                 elif prevOperand in '*/':
                     firstArg = stack.pop()
                     stack.append(evaluate(prevOperand, firstArg, curNumber))
-                    curNumber = 0
-                    prevOperand = c
+                curNumber = 0
+                prevOperand = c
                 if c == ')':
                     while stack and type(stack[-1]) == int:
                         curNumber += stack.pop()
