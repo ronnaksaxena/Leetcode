@@ -1,23 +1,18 @@
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
-        DP = [[0 for _ in range(len(word1)+1)] for _ in range(len(word2)+1)]
+        @cache
+        def dp(i1, i2):
+            if i1 == -1:
+                return i2 + 1
+            if i2 == -1:
+                return i1 + 1
+            
+            if word1[i1] == word2[i2]:
+                return dp(i1-1, i2-1)
 
-        for c in range(len(DP[0])):
-            DP[0][c] = c
+            return 1 + min(dp(i1-1,i2-1), dp(i1-1, i2), dp(i1, i2-1))
 
-        for r in range(len(DP)):
-            DP[r][0] = r
-
-        # word 2
-        for i in range(1, len(DP)):
-            # word 1
-            for j in range(1, len(DP[0])):
-                if word1[j-1] == word2[i-1]:
-                    DP[i][j] = DP[i-1][j-1]
-                else:
-                    DP[i][j] = 1 + min(DP[i-1][j-1], DP[i-1][j], DP[i][j-1])
-
-        return DP[-1][-1]
+        return dp(len(word1)-1, len(word2)-1)
 
 
         
