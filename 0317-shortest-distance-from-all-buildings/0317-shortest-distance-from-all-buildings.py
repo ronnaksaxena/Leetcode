@@ -5,7 +5,7 @@ class Solution:
         output: sum of distances to all builidngs
         - values can only be 0, 1, 2
         - 4 directional traversal
-        - distance = |x1 - x2| + |y1 - y2|
+        - distance = |x1 - x2| + |y1 - y2| => need to take obstacles into account
         - no memory constaints on size of matrix
         - cannot pass through buildings
 
@@ -58,6 +58,7 @@ class Solution:
                     curR, curC = q.popleft()
                     if grid[curR][curC] == 0:
                         housesReached[(curR, curC)] += 1
+                        # Need to take obstacles into account
                         distanceToHouses[(curR, curC)] += curDistance
                     for dR, dC in dirs:
                         newR, newC = curR+dR, curC+dC
