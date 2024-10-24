@@ -1,13 +1,11 @@
 # Write your MySQL query statement below
 SELECT
-    Weather.id AS 'id'
+    next.id as id
 FROM
-    Weather
-JOIN
-    Weather AS w
+    Weather AS prev
+RIGHT JOIN
+    Weather AS next
 ON 
-    DATEDIFF(Weather.recordDate, w.recordDate) = 1
-AND
-    Weather.Temperature > w.Temperature
-
-    
+    DATEDIFF(next.recordDate, prev.recordDate) = 1
+WHERE
+    next.temperature > prev.temperature
