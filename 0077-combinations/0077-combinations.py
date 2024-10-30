@@ -17,7 +17,7 @@ Space: O(k)
 
         output = []
 
-        def backtrack(cur=[], leftBound=1):
+        def backtrack(cur=[]):
             nonlocal output
             if len(cur) == k:
                 output.append(cur[:])
