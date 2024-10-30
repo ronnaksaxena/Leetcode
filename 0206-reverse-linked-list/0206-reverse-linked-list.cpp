@@ -15,9 +15,16 @@ public:
             return head;
         }
 
-        ListNode* ptr = reverseList(head->next);
-        head->next->next = head;
-        head->next = nullptr;
-        return ptr;
+        ListNode* prev = nullptr;
+        ListNode* cur = head;
+
+        while (cur) {
+            ListNode* temp = cur->next;
+            cur->next = prev;
+            prev = cur;
+            cur = temp;
+        }
+
+        return prev;
     }
 };
