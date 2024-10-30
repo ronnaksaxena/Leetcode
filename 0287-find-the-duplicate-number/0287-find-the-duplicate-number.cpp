@@ -12,22 +12,34 @@ Steps:
 */
 
 void printVect(vector<int>& arr) {
-    for (const int e: arr) {
-        cout << e << ', ';
+    for (const int& e: arr) {
+        cout << e << ", ";
     }
     cout << endl;
 }
 class Solution {
 public:
+    int getNextIndex(int n, vector<int>& nums) {
+        return nums[n -1];
+    }
     int findDuplicate(vector<int>& nums) {
-        for (int i = 0; i < nums.size(); i++) {
-            int index = abs(nums[i]) - 1;
-            if (nums[index] < 0) {
-                // printVect(nums);
-                return abs(nums[i]);
-            }
-            nums[index] *= -1;
+
+        // Find the intersection point of the two runners.
+        int tortoise = nums[0];
+        int hare = nums[0];
+
+        do {
+            tortoise = nums[tortoise];
+            hare = nums[nums[hare]];
+        } while (tortoise != hare);
+
+        // Find the "entrance" to the cycle.
+        tortoise = nums[0];
+        while (tortoise != hare) {
+            tortoise = nums[tortoise];
+            hare = nums[hare];
         }
-        return 0;
+
+        return hare;
     }
 };
