@@ -6,8 +6,7 @@ public:
         int i = 0;
 
         while (i < intervals.size() and intervals[i][0] < newInterval[0]) {
-            output.emplace_back(intervals[i]);
-            i++;
+            output.emplace_back(intervals[i++]);
         }
 
         // Insert newInternval and check if merge
