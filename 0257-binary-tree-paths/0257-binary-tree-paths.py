@@ -11,15 +11,15 @@ class Solution:
         output = []
         def dfs(node, curPath = []):
             nonlocal output
-            if not node:
-                return
             if not node.left and not node.right:
                 path = '->'.join(curPath) + '->' + str(node.val) if curPath else str(node.val)
                 output.append(path)
                 return
             curPath.append(str(node.val))
-            dfs(node.left)
-            dfs(node.right)
+            if node.left:
+                dfs(node.left)
+            if node.right:
+                dfs(node.right)
             curPath.pop()
 
         dfs(root)
