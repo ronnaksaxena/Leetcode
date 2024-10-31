@@ -17,7 +17,7 @@ public:
                 output.back()[1] = max(output.back()[1], i[1]);
                 // printList(output);
             } else {
-                output.push_back(i);
+                output.emplace_back(i);
             }
         }
 
