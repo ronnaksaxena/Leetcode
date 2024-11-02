@@ -1,17 +1,12 @@
 class Solution:
     def minCostClimbingStairs(self, cost: List[int]) -> int:
+        n = len(cost)
 
-        @lru_cache
-        def dp(step):
-            if step <= 1:
-                return cost[0] if step == 0 else cost[1]
-            
-            return cost[step] + min(dp(step-1), dp(step-2))
+        dp = [0 for _ in range(n+1)]
 
-        return min(dp(len(cost)-1), dp(len(cost)-2))
-        
-        '''
-        [10,15,20]
-               i
+        for i in range(2, len(dp)):
+            option1 = dp[i-1] + cost[i-1]
+            option2 = dp[i-2] + cost[i-2]
+            dp[i] = min(option1, option2)
 
-        '''
+        return dp[n]
