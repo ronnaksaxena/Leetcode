@@ -28,6 +28,7 @@ class Solution:
                 m = l + (r-l)//2
                 if heaters[m] == housePos:
                     return m
+                    # WHY? Since current heater pos < housePos: we must insert to left half
                 elif heaters[m] < housePos:
                     l = m + 1
                 else:
