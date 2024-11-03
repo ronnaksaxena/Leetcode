@@ -1,58 +1,68 @@
 class Solution:
     def calculate(self, s: str) -> int:
         '''
-        case 1: digit
+        "(1+(4+5+2)-3)+(6+8)"
+                  i
+        s = [0, +, ]
+        res = 12
+        curNumber = 4
+        sign = -1
+
+        EDGE CASE: ignore whitespace
+        case 1: num
             - update curNumber
         case 2: sign
-            - update output = (sign * curNumber)
-            - set new sign
-            - reset curNumber
-        case 3: opening parenthesis
-            - push sign onto stack
-            - push output onto stack and reset
+            - update/reset output
+            - update/reset sign
+        case 3: open parenthesis
+            - store computation & sign so far in stack
+            - reset curNumber, sign, otutput
+        case 4: close parenthesis => compute this level + outer level
+            - this level result = result + stack.pop() {sign}
+            - outer level + current level
+            output = output.pop() + current level
+        case 5: reached end of string
+            - final result is rest + (sign + curNumber)
 
-        case 4: closes parethesis
-            - update output = stack.pop() (sign) * output + stack.pop() (prevResult)
+        Time: O(n)
+        Space: O(n) for stack
 
-
-        end return output * sign
-
-        "(1+(4+5+2)-3)+(6+8)"
-                     i
-        s = [0, +, ]
-        sign = -1
-        output = 11
-        curNumber = 3
         '''
 
         stack = []
+        curNumber, result = 0, 0
         sign = 1
-        output = 0 # sum for current level exploring
-        curNumber = 0
 
         for c in s:
-            # Updating digit
+            if c == ' ':
+                continue
+            print(result, curNumber, stack, sign)
             if c.isdigit():
                 curNumber = curNumber*10 + int(c)
-            # add parsed num to level sum
-            elif c in '+-':
-                output += (sign * curNumber)
+            elif c in "+-":
+                result += (curNumber * sign)
                 sign = 1 if c == '+' else -1
                 curNumber = 0
-            # Store outer level sum in stack and sign of next level
             elif c == '(':
-                stack.append(output)
+                stack.append(result)
+                result = 0
                 stack.append(sign)
                 sign = 1
-                output = 0
-            # Eval current level, negate if minus, sum with outer level
             elif c == ')':
-                output += (curNumber * sign)
-                output *= stack.pop() # set sign
-                output += stack.pop() # add outer computation
+                # (4 + 5)
+                # curNumber = 0
+                # res = 9
+                # sign = 1
+                # stack [3, +]
+                result += (sign * curNumber)
                 curNumber = 0
-
-        # Add last parsed number to global sum
-        return output + (sign*curNumber)
+                # update negation of level result
+                result *= stack.pop()
+                # sum with outer level result
+                result = stack.pop() + result
+                sign = 1
+        
+        # Add final computation to end of string
+        return result + (sign * curNumber)
 
         
