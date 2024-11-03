@@ -1,32 +1,49 @@
+'''
+1 2 3 4 7 5 6
+
+divide data into 2 heaps
+
+lowerHalf in maxHeap     upperHalf in minHeap
+
+       1 2                        3 4 7
+'''
+
+
 class MedianFinder:
 
     def __init__(self):
-        self.minHeap = []
-        self.maxHeap = []
+        self.lowerHalf = [] # maxHeap
+        self.upperHalf = [] # minHeap
         
 
     def addNum(self, num: int) -> None:
-        if self.minHeap and num >= self.minHeap[0]:
-            heapq.heappush(self.minHeap, num)
-        else:
-            heapq.heappush(self.maxHeap, -num)
-        
-        if abs(len(self.minHeap) - len(self.maxHeap)) > 1:
-            if len(self.minHeap) > len(self.maxHeap):
-                element = heapq.heappop(self.minHeap)
-                heapq.heappush(self.maxHeap, -element)
-            else:
-                element = -heapq.heappop(self.maxHeap)
-                heapq.heappush(self.minHeap, element)
+        '''
+        if not upperHalf or num >= top of upperHalf add to upper
+        else: push to lowerHalf
 
+        if lengths of heap differ by 2: pop from larger heap and push onto smaller heap
+        '''
+        if not self.upperHalf or num >= self.upperHalf[0]:
+            heapq.heappush(self.upperHalf, num)
+        else:
+            heapq.heappush(self.lowerHalf, -num)
+
+        if abs(len(self.upperHalf) - len(self.lowerHalf)) == 2:
+            if len(self.upperHalf) > len(self.lowerHalf):
+                heapq.heappush(self.lowerHalf, -heapq.heappop(self.upperHalf))
+            else:
+                heapq.heappush(self.upperHalf, -heapq.heappop(self.lowerHalf))
         
 
     def findMedian(self) -> float:
-        # print(f'minHeap {self.minHeap} maxHeap {self.maxHeap}')
-        if len(self.minHeap) == len(self.maxHeap):
-            return ((-self.maxHeap[0] + self.minHeap[0]) / 2)
-        
-        return self.minHeap[0] if len(self.minHeap) > len(self.maxHeap) else -self.maxHeap[0]
+        '''
+        the top of whichever has more elements is median
+        else avg of top of 2
+        '''
+        if len(self.upperHalf) == len(self.lowerHalf):
+            return (-self.lowerHalf[0] + self.upperHalf[0]) / 2
+        else:
+            return self.upperHalf[0] if len(self.upperHalf) > len(self.lowerHalf) else -self.lowerHalf[0]
         
 
 
