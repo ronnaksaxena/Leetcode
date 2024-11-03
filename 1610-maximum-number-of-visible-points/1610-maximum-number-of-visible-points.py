@@ -1,34 +1,46 @@
+from typing import List
+import math
+
 class Solution:
     def visiblePoints(self, points: List[List[int]], angle: int, location: List[int]) -> int:
-        locX, locY = location[0], location[1]
-        pAngles = []
-        locCount = 0
-        
-        # find angle from location O(P)
-        for point in points:
-            xp, yp = point[0], point[1]
-            if (yp - locY) == 0 and (xp - locX) == 0:
-                locCount += 1
-                continue
+        def getAngle(p1, p2):
+            x1, y1 = p1
+            x2, y2 = p2
+            deltaX = x2 - x1
+            deltaY = y2 - y1
+
+            radAngle = math.atan2(deltaY, deltaX)
+            degrees = math.degrees(radAngle)
+            if degrees < 0:
+                degrees += 360
+            return degrees
+
+        def pointInWindow(startAngle, compareAngle, windowLength):
+            endAngle = startAngle + windowLength
+            if endAngle >= 360:
+                return startAngle <= compareAngle < 360 or 0 <= compareAngle <= endAngle % 360
             else:
-                pAngle = math.degrees(math.atan2((xp - locX), (yp - locY)))
-            pAngles.append(pAngle)
-        
-        # Add same angles in quadrant but from 180 to 540
-        # explain in the above graphics
-        pAngles += [a + 360 for a in pAngles] # O(P)
-        # sort so we can slide window # O(P log(P))
-        pAngles.sort()
-        
-        # print(pAngles)
-        
-        # Sliding Window to find maximum subarray within the angle given # O(P)
+                return startAngle <= compareAngle <= endAngle
+
+        # Filter points at the location itself
+        filteredPoints = [p for p in points if p != location]
+        samePoints = len(points) - len(filteredPoints)  # Number of points at the exact location
+        if not filteredPoints:
+            return len(points)
+
+        # Calculate the angle of each point relative to the location
+        angles = [getAngle(location, p) for p in filteredPoints]
+        angles.sort()
+
+        # Duplicate the angles array with +360 to handle circular wrap-around
+        angles += [a + 360 for a in angles]
+
+        # Sliding window over the sorted angle list
         maxCount = 0
-        l, r = 0, 0
-        while r < len(pAngles):
-            while r < len(pAngles) and pAngles[r] <= pAngles[l] + angle:
-                r += 1
-            maxCount = max(maxCount, r - l)
-            l += 1
-        
-        return maxCount + locCount
+        l = 0
+        for r in range(len(angles)):
+            while angles[r] - angles[l] > angle:
+                l += 1
+            maxCount = max(maxCount, r - l + 1)
+
+        return maxCount + samePoints
