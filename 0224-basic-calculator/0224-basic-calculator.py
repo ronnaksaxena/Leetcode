@@ -36,7 +36,7 @@ class Solution:
         for c in s:
             if c == ' ':
                 continue
-            print(result, curNumber, stack, sign)
+            # print(result, curNumber, stack, sign)
             if c.isdigit():
                 curNumber = curNumber*10 + int(c)
             elif c in "+-":
