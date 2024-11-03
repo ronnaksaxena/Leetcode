@@ -10,41 +10,40 @@ class Solution:
         Do not return anything, modify root in-place instead.
         """
         '''
-        cases:
-            - empty node
-            - leaf node
-            - no left subtree
-            - if left subtree reorder tree
+        1
+        / \
+        2. 5
+    /.  \.   \
+    3.  4.   6
 
-            1
-        /.      \
-                2        
-                 \        
-                    3        
-                    \
-                   4
-                        \
-                        5
-                        \
-                        6
+        Steps: Post order traversal
+        Find right most node of left subtree
+        rightNode.right = curNode.right
+        curNode.right = curNode.left
+        curNode.left = None
 
-    1. Make right ptr of right most node in left subtree: right subtree
-    2. Make left subtree cur node's right subtree
-    3. set node's left subtree to null
+        return head to parent
         '''
-        def isLeaf(node):
-            return not node.left and not node.right
+
+        def dfs(node):
+            if not node:
+                return None
+            
+            left = dfs(node.left)
+            right = dfs(node.right)
+
+            # Have tail of left subtree point to right subtree
+            if left:
+                rightMost = left
+                while rightMost.right:
+                    rightMost = rightMost.right
+                rightMost.right = right
+                node.right = left
+                node.left = None
+            return node
+
+        dfs(root)
+        return None
+
         
-        if not root or isLeaf(root):
-            return root
-
-        self.flatten(root.left)
-        self.flatten(root.right)
-        if root.left:
-            rightMost = root.left
-            while rightMost.right:
-                rightMost = rightMost.right
-            rightMost.right = root.right
-            root.right = root.left
-            root.left = None
-
+        
