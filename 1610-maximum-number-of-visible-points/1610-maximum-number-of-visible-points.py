@@ -21,6 +21,7 @@ class Solution:
 
         Time: O(NlogN) to sort + O(N) to slide through window
         Space: O(n) to store other angles // can omit
+
         '''
 
         def getAngle(p1, p2):
@@ -42,7 +43,18 @@ class Solution:
         samePoints = len(points) - len(filteredPoints)
         angles = [getAngle(location, p)for p in filteredPoints]
         angles.sort()
+
+
         angles += [a + 360 for a in angles]
+        '''
+        ex:
+        angle is 40
+        angles = [10, 20, 30, 340, 350]
+        angles = [10, 20, 30, 340, 350, 370, 380, 390, 700, 710]
+                               l                    r
+                                                    30
+
+        '''
         maxWindow = 0
         l = 0
         # print(angles)
