@@ -1,27 +1,39 @@
 class Solution:
     def findRadius(self, houses: List[int], heaters: List[int]) -> int:
-        # Sort both houses and heaters
-        houses.sort()
+        '''
+        [1,2,3,4], heaters = [1,4]
+         0 1 1 1
+        '''
+        n = len(heaters)
+        def bSearch(heaters, housePos):
+            l, r = 0, len(heaters)
+            while l < r:
+                m = l + (r-l)//2
+                if heaters[m] == housePos:
+                    return m
+                elif housePos > heaters[m]:
+                    l = m + 1
+                else:
+                    r = m
+            return l
+
+
         heaters.sort()
-        
-        # To store the minimum radius
-        min_radius = 0
-        
-        # Iterate over each house
+
+        minRadius = 0
         for house in houses:
-            # Binary search to find the position of the closest heater
-            pos = bisect.bisect_left(heaters, house)
             
-            # Compute distances to the nearest heater (before and after)
-            left_heater_distance = float('inf') if pos == 0 else house - heaters[pos - 1]
-            right_heater_distance = float('inf') if pos == len(heaters) else heaters[pos] - house
-            
-            # Take the minimum distance of the two
-            min_distance = min(left_heater_distance, right_heater_distance)
-            
-            # Update the radius (max of all minimum distances)
-            min_radius = max(min_radius, min_distance)
-        
-        return min_radius
-            
+            i = bSearch(heaters, house)
+            if i < n and heaters[i] == house:
+                continue
+            # We know no heaters is at exact positons
+            leftDistance = house - heaters[i-1] if i > 0 else float('inf')
+            rightDistance = heaters[i] - house if i < n else float('inf')
+            closestDistance = min(leftDistance, rightDistance)
+            minRadius = max(minRadius, closestDistance)
+
+        return minRadius
+
+
+
         
