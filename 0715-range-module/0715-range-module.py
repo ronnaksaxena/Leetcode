@@ -2,59 +2,69 @@ from sortedcontainers import SortedDict
 
 class RangeModule:
     def __init__(self):
-        self.intervals = SortedDict()
-
+        self.d = SortedDict()
+        
     def addRange(self, left: int, right: int) -> None:
-        # Find the position to start merging
-        start = self.intervals.bisect_left(left)
-        if start > 0 and self.intervals.values()[start - 1] >= left:
-            start -= 1
+        i = self.d.bisect_left(left)
+        n = len(self.d)
 
-        # Merge overlapping intervals
-        new_start, new_end = left, right
-        keys_to_remove = []
-        for i in range(start, len(self.intervals)):
-            curr_start = self.intervals.keys()[i]
-            curr_end = self.intervals[curr_start]
-            if curr_start > right:
+        if i > 0 and list(self.d.values())[i - 1] >= left:
+            i -= 1
+
+        newStart, newEnd = left, right
+        keysToRemove = []
+
+        for j in range(i, n):
+            curStart = list(self.d.keys())[j]
+            curEnd = self.d[curStart]
+            if curStart > newEnd:
                 break
-            new_start = min(new_start, curr_start)
-            new_end = max(new_end, curr_end)
-            keys_to_remove.append(curr_start)
+            keysToRemove.append(curStart)
+            newStart = min(newStart, curStart)
+            newEnd = max(newEnd, curEnd)
 
-        for key in keys_to_remove:
-            self.intervals.pop(key)
-        self.intervals[new_start] = new_end
+        for k in keysToRemove:
+            del self.d[k]
 
-    def removeRange(self, left: int, right: int) -> None:
-        # Find the position to start splitting
-        start = self.intervals.bisect_left(left)
-        if start > 0 and self.intervals.values()[start - 1] > left:
-            start -= 1
-
-        # Split overlapping intervals
-        keys_to_remove = []
-        new_intervals = []
-        for i in range(start, len(self.intervals)):
-            curr_start = self.intervals.keys()[i]
-            curr_end = self.intervals[curr_start]
-            if curr_start >= right:
-                break
-            keys_to_remove.append(curr_start)
-            if curr_start < left:
-                new_intervals.append((curr_start, left))
-            if curr_end > right:
-                new_intervals.append((right, curr_end))
-
-        for key in keys_to_remove:
-            self.intervals.pop(key)
-        for start, end in new_intervals:
-            self.intervals[start] = end
+        self.d[newStart] = newEnd
 
     def queryRange(self, left: int, right: int) -> bool:
-        # Find the interval that might contain [left, right)
-        start = self.intervals.bisect_right(left) - 1
-        if start < 0:
-            return False
-        return self.intervals.values()[start] >= right
+        # Find the largest interval starting <= `left`
+        i = self.d.bisect_right(left) - 1
 
+        # If `i < 0`, there is no interval that could possibly cover `left`
+        if i < 0:
+            return False
+
+        # Retrieve the range that might cover `left`
+        rangeStart = list(self.d.keys())[i]
+        rangeEnd = self.d[rangeStart]
+
+        # Check if the entire `[left, right)` range is within the tracked interval
+        return rangeStart <= left and rangeEnd >= right
+
+    def removeRange(self, left: int, right: int) -> None:
+        i = self.d.bisect_left(left)
+        if i > 0 and list(self.d.values())[i - 1] > left:
+            i -= 1
+
+        keysToRemove = []
+        intervalsToAdd = []
+        n = len(self.d)
+
+        for j in range(i, n):
+            curStart = list(self.d.keys())[j]
+            curEnd = self.d[curStart]
+            if curStart >= right:
+                break
+            keysToRemove.append(curStart)
+            if curStart < left:
+                intervalsToAdd.append((curStart, left))
+            if curEnd > right:
+                intervalsToAdd.append((right, curEnd))
+
+        for k in keysToRemove:
+            del self.d[k]
+
+        for s, e in intervalsToAdd:
+            self.d[s] = e
