@@ -23,7 +23,7 @@ class RangeModule:
             keys_to_remove.append(curr_start)
 
         for key in keys_to_remove:
-            del self.intervals[key]
+            self.intervals.pop(key)
         self.intervals[new_start] = new_end
 
     def removeRange(self, left: int, right: int) -> None:
@@ -47,7 +47,7 @@ class RangeModule:
                 new_intervals.append((right, curr_end))
 
         for key in keys_to_remove:
-            del self.intervals[key]
+            self.intervals.pop(key)
         for start, end in new_intervals:
             self.intervals[start] = end
 
