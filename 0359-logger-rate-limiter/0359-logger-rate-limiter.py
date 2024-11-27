@@ -1,14 +1,27 @@
 class Logger:
 
     def __init__(self):
-        self.logs = {}
+        self.q = collections.deque() # (timestamp, msg)
+        self.msg = set()
         
 
     def shouldPrintMessage(self, timestamp: int, message: str) -> bool:
-        if message in self.logs and (self.logs[message] + 10) > timestamp:
+        
+        while self.q:
+            t, m = self.q[0]
+            if t > (timestamp - 10):
+                break
+            self.q.popleft()
+            self.msg.remove(m)
+
+        if message in self.msg:
             return False
-        self.logs[message] = timestamp
-        return True
+        else:
+            self.q.append((timestamp, message))
+            self.msg.add(message)
+            return True
+
+
         
 
 
