@@ -7,31 +7,34 @@
 class Solution:
     def delNodes(self, root: Optional[TreeNode], to_delete: List[int]) -> List[TreeNode]:
 
-        to_delete_set = set(to_delete)
         output = []
-        def dfs(node):
-            nonlocal to_delete_set, output
-            if not node:
-                return
-            left = dfs(node.left)
-            right = dfs(node.right)
+        to_delete_set = set(to_delete)
 
+        def dfs(node, to_delete_set):
+            nonlocal output
+            if not node:
+                return None
+            
+            left = dfs(node.left, to_delete_set)
+            right = dfs(node.right, to_delete_set)
+
+            # Case 1 current node processed in to_delete_set
             if node.val in to_delete_set:
                 if left:
                     output.append(left)
                 if right:
                     output.append(right)
-                del node
                 return None
-            else:
-                node.left = left
-                node.right = right
-                return node
 
-        new_root = dfs(root)
-        if new_root:
-            output.append(new_root)
+            # Need to update ptrs
+            node.left = left
+            node.right = right
+            return node
+
+
+        finalRoot = dfs(root, to_delete_set)
+        if finalRoot:
+            output.append(finalRoot)
+
         return output
-
-        
         
